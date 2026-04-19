@@ -1,0 +1,4 @@
+admin01,Siddhant,admin
+s002,Yugant Adhikari,student
+s003,Sumnima Dhungana,student
+s004,Shreya bista,student

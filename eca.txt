@@ -1,0 +1,3 @@
+s002,Dance,Debate Club,Art
+s003,basketball
+s004,chess
