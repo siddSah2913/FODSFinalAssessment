@@ -2,7 +2,7 @@
 
 import os
 
-
+# Files setup function
 def setup_files():
     """Creating the 4 data files with sample data if they don't already exist."""
 
@@ -31,6 +31,75 @@ def setup_files():
             # Format: student_id, activity1, activity2 ...
             f.write("s001,Football,Music Club\n")
             f.write("s002,Dance,Debate Club,Art\n")
+
+# Read file function
+def read_file(filename):
+    """Read all lines from a file and return as a list."""
+    try:
+        with open(filename, "r") as f:
+            return [line.strip() for line in f.readlines() if line.strip()]
+    except FileNotFoundError:
+        print(f"  [!] File '{filename}' not found. Creating it now...")
+        open(filename, "w").close()
+        return []
+    except Exception as e:
+        print(f"  [!] Error reading '{filename}': {e}")
+        return []
+
+# Write file function
+def write_file(filename, lines):
+    """Write a list of lines back to a file."""
+    try:
+        with open(filename, "w") as f:
+            for line in lines:
+                f.write(line + "\n")
+    except Exception as e:
+        print(f"  [!] Error writing to '{filename}': {e}")
+
+# Divider function (just for decoration)
+def divider():
+    print("\n" + "-" * 45 + "\n")
+
+class User:
+    """
+    Base class is for all users.
+    Both Admin and Student inherit from this.
+    """
+
+    # Constructor
+    def __init__(self, user_id, name, role):
+        self.user_id = user_id   
+        self.name    = name      
+        self.role    = role
+
+    # Show profile function
+    def show_profile(self):
+        """Print this user's basic profile."""
+        print(f"\n  Name    : {self.name}")
+        print(f"  ID      : {self.user_id}")
+        print(f"  Role    : {self.role.capitalize()}")
+    
+    # Update profile function
+    def update_profile(self):
+        """Let a user change their own name."""
+        try:
+            print(f"\n  Current name: {self.name}")
+            new_name = input("  Enter new name (or press Enter to keep): ").strip()
+            if new_name:
+                lines = read_file("users.txt")
+                updated = []
+                for line in lines:
+                    parts = line.split(",")
+                    if parts[0] == self.user_id:
+                        parts[1] = new_name
+                        self.name = new_name
+                    updated.append(",".join(parts))
+                write_file("users.txt", updated)
+                print(f"  Name updated to '{new_name}'")
+            else:
+                print("  No changes made.")
+        except Exception as e:
+            print(f"  [!] Could not update profile: {e}")
 
 # Main function
 def main():
